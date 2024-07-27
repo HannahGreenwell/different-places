@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import postcodes from "./data/postcodes.json";
+import "./App.css";
+
+const getPostcode = () => {
+  const { list } = postcodes;
+  const randomIndex = Math.floor(Math.random() * list.length);
+  return list[randomIndex];
+};
 
 function App() {
+  const [postcode, setPostcode] = React.useState(null);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header>
+        <h1 className="App-header" onClick={() => setPostcode(null)}>
+          Different Places
+        </h1>
       </header>
+
+      {postcode ? (
+        <p className="App-postcode">{postcode}</p>
+      ) : (
+        <button
+          className="App-button"
+          onClick={() => setPostcode(getPostcode())}
+        >
+          Where to next?
+        </button>
+      )}
     </div>
   );
 }
