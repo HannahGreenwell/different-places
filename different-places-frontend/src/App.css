@@ -1,5 +1,5 @@
 .App {
-  font-family: "Helvetica Neue";
+  font-family: 'Helvetica Neue';
   text-align: center;
 }
 
@@ -12,7 +12,7 @@
 
 .App-postcode {
   color: greenyellow;
-  font-family: "Helvetica Neue";
+  font-family: 'Helvetica Neue';
   font-size: 5rem;
   font-weight: 500;
   -webkit-text-stroke: 1px black;

@@ -1,6 +1,6 @@
-import React from "react";
-import postcodes from "./data/postcodes.json";
-import "./App.css";
+import React from 'react';
+import postcodes from './data/postcodes.json';
+import './App.css';
 
 const getPostcode = () => {
   const { list } = postcodes;
