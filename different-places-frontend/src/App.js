@@ -15,7 +15,9 @@ function App() {
     <div className="App">
       <header>
         <h1 className="App-header" onClick={() => setPostcode(null)}>
-          Different Places
+          Different
+          <br />
+          Places
         </h1>
       </header>
 
