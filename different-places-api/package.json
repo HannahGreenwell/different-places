@@ -1,0 +1,21 @@
+{
+  "name": "different-places-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "engines": {
+    "node": "v16.20.2"
+  },
+  "scripts": {
+    "start": "node ."
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.24.8",
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.3",
+    "@babel/register": "^7.24.6",
+    "nodemon": "^3.1.4"
+  }
+}
