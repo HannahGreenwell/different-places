@@ -1,5 +1,5 @@
 import express from 'express';
-import * as PostcodeSearch from '../services/postcodeSearch';
+import * as PostcodeSearch from '../services/postcode-search';
 
 const router = express.Router();
 

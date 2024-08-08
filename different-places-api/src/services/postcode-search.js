@@ -25,7 +25,7 @@ function transformPostcodeSearchData(postcode, data) {
 export async function search(postcode) {
   const response = await fetch(
     `${AUSPOST_POSTCODE_SEARCH_URL}q=${postcode}&state=VIC`,
-    { headers: { 'auth-key': 'process.env.AUSPOST_API_AUTH_KEY' } },
+    { headers: { 'auth-key': process.env.AUSPOST_API_AUTH_KEY } },
   );
 
   if (!response.ok) {
