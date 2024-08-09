@@ -22,27 +22,28 @@ function transformPostcodeSearchData(postcode, data) {
   };
 }
 
-export async function search(postcode) {
+export async function searchPostcode(postcode) {
   const response = await fetch(
     `${AUSPOST_POSTCODE_SEARCH_URL}q=${postcode}&state=VIC`,
     { headers: { 'auth-key': process.env.AUSPOST_API_AUTH_KEY } },
   );
 
+  const data = await response.json();
+
   if (!response.ok) {
     logger.error({
-      message: 'Error fetching place data from postcode search API',
+      message: 'Error retrieving localities from postcode search API',
       data: {
         status: response.status,
         url: response.url,
+        error: data.error,
       },
     });
 
-    return { success: false };
+    return { status: 'rejected' };
   }
-
-  const data = await response.json();
 
   const place = transformPostcodeSearchData(postcode, data);
 
-  return { success: true, place };
+  return { status: 'resolved', place };
 }

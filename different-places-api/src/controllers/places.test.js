@@ -1,5 +1,6 @@
 import request from 'supertest';
-import app from './../app';
+import logger from 'loglevel';
+import app from '../app';
 
 const MOCK_POSTCODE_SEARCH_PAYLOAD = {
   localities: {
@@ -25,6 +26,8 @@ const MOCK_POSTCODE_SEARCH_PAYLOAD = {
     ],
   },
 };
+
+logger.error = jest.fn();
 
 global.fetch = jest.fn();
 
@@ -77,7 +80,9 @@ describe('GET /places/:id', () => {
 
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(response.status).toBe(404);
-    expect(response.body).toEqual({ error: 'Invalid postcode' });
+    expect(response.body).toEqual({
+      error: 'No places found matching postcode: 1111',
+    });
   });
 
   test('returns 502 when postcode search response is not ok', async () => {
@@ -96,7 +101,7 @@ describe('GET /places/:id', () => {
 
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(response.status).toBe(502);
-    expect(response.body).toEqual({ message: 'Unable to fetch place data' });
+    expect(response.body).toEqual({ error: 'Unable to retrieve place data' });
   });
 
   test('returns 500 when postcode search fails', async () => {
