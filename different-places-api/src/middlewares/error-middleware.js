@@ -1,3 +1,5 @@
+import logger from 'loglevel';
+
 function errorMiddleware(err, req, res, next) {
   if (res.headersSent) {
     next(err);
