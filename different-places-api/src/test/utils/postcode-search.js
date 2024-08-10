@@ -45,6 +45,12 @@ export const getPostcodeSearchOkResponse = () => ({
   json: () => Promise.resolve(MOCK_MULTIPLE_LOCALITIES_MATCHED_DATA),
 });
 
+export const getPostcodeSearchUnmatchedResponse = () => ({
+  ok: true,
+  status: 200,
+  json: () => Promise.resolve(MOCK_NO_LOCALITIES_MATCHED_DATA),
+});
+
 export const getPostcodeSearchBadResponse = () => ({
   ok: false,
   status: 403,
@@ -54,10 +60,4 @@ export const getPostcodeSearchBadResponse = () => ({
         errorMessage: 'Sorry, you are not authorised to use this service.',
       },
     }),
-});
-
-export const getPostcodeSearchUnmatchedResponse = () => ({
-  ok: true,
-  status: 200,
-  json: () => Promise.resolve(MOCK_NO_LOCALITIES_MATCHED_DATA),
 });
