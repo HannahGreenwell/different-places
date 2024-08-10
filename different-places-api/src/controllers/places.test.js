@@ -1,31 +1,11 @@
 import request from 'supertest';
 import logger from 'loglevel';
 import app from '../app';
-
-const MOCK_POSTCODE_SEARCH_PAYLOAD = {
-  localities: {
-    locality: [
-      {
-        category: 'Delivery Area',
-        id: 5512,
-        latitude: -37.79021717,
-        location: 'CLIFTON HILL',
-        longitude: 144.9976586,
-        postcode: 3068,
-        state: 'VIC',
-      },
-      {
-        category: 'Delivery Area',
-        id: 5513,
-        latitude: -37.78389665,
-        location: 'FITZROY NORTH',
-        longitude: 144.9842953,
-        postcode: 3068,
-        state: 'VIC',
-      },
-    ],
-  },
-};
+import {
+  getPostcodeSearchBadResponse,
+  getPostcodeSearchOkResponse,
+  getPostcodeSearchUnmatchedResponse,
+} from '../test/utils/postcode-search';
 
 logger.error = jest.fn();
 
@@ -37,11 +17,7 @@ beforeEach(() => {
 
 describe('GET /places/:id', () => {
   test('returns 200 and the place requested', async () => {
-    fetch.mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: () => Promise.resolve(MOCK_POSTCODE_SEARCH_PAYLOAD),
-    });
+    fetch.mockResolvedValue(getPostcodeSearchOkResponse());
 
     const response = await request(app).get('/api/places/3068');
 
@@ -67,14 +43,7 @@ describe('GET /places/:id', () => {
   });
 
   test('returns 404 when no places are found', async () => {
-    fetch.mockResolvedValue({
-      ok: true,
-      status: 200,
-      json: () =>
-        Promise.resolve({
-          localities: '',
-        }),
-    });
+    fetch.mockResolvedValue(getPostcodeSearchUnmatchedResponse());
 
     const response = await request(app).get('/api/places/1111');
 
@@ -86,16 +55,7 @@ describe('GET /places/:id', () => {
   });
 
   test('returns 502 when postcode search response is not ok', async () => {
-    fetch.mockResolvedValue({
-      ok: false,
-      status: 403,
-      json: () =>
-        Promise.resolve({
-          error: {
-            errorMessage: 'Sorry, you are not authorised to use this service.',
-          },
-        }),
-    });
+    fetch.mockResolvedValue(getPostcodeSearchBadResponse());
 
     const response = await request(app).get('/api/places/3068');
 

@@ -1,7 +1,7 @@
 import { AUSPOST_POSTCODE_SEARCH_URL } from '../constants/urls';
 import logger from 'loglevel';
 
-function transformPostcodeSearchData(postcode, data) {
+export function transformPostcodeSearchData(postcode, data) {
   const { localities } = data;
 
   if (!localities) {
