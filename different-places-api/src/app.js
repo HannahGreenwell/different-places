@@ -1,3 +1,4 @@
+import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import 'express-async-errors';
@@ -9,7 +10,10 @@ const app = express();
 
 logger.setLevel('info');
 
+app.use(cors());
+
 app.use('/api', placesRouter);
+
 app.use(errorMiddleware);
 
 export default app;
