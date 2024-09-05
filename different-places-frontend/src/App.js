@@ -1,36 +1,15 @@
 import React from 'react';
-import postcodes from './data/postcodes.json';
+import Place from './components/Place/Place';
 import './App.css';
 
-const getPostcode = () => {
-  const { list } = postcodes;
-  const randomIndex = Math.floor(Math.random() * list.length);
-  return list[randomIndex];
-};
-
 function App() {
-  const [postcode, setPostcode] = React.useState(null);
-
   return (
     <div className="App">
       <header>
-        <h1 className="App-header" onClick={() => setPostcode(null)}>
-          Different
-          <br />
-          Places
-        </h1>
+        <h1 className="App-header">Different Places</h1>
       </header>
 
-      {postcode ? (
-        <p className="App-postcode">{postcode}</p>
-      ) : (
-        <button
-          className="App-button"
-          onClick={() => setPostcode(getPostcode())}
-        >
-          Where to next?
-        </button>
-      )}
+      <Place />
     </div>
   );
 }
