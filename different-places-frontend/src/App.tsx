@@ -1,5 +1,5 @@
 import React from 'react';
-import Place from './components/Place/Place';
+import Place from './components/NextPlace/NextPlace';
 import './App.css';
 
 function App() {

@@ -1,7 +1,18 @@
 import React from 'react';
 import { API_BASE_URL } from '../../constants/urls';
 import postcodes from '../../data/postcodes.json';
-import './Place.css';
+import './NextPlace.css';
+
+interface Location {
+  name: string;
+  latitude: number;
+  longitude: number;
+}
+
+interface Place {
+  postcode: string;
+  locations: Array<Location>;
+}
 
 const getRandomPostcode = () => {
   const { list } = postcodes;
@@ -9,10 +20,10 @@ const getRandomPostcode = () => {
   return list[randomIndex];
 };
 
-function Place() {
-  const [place, setPlace] = React.useState(null);
+function NextPlace() {
+  const [place, setPlace] = React.useState<Place>();
   const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState(null);
+  const [error, setError] = React.useState('');
 
   const handleClick = async () => {
     const postcode = getRandomPostcode();
@@ -28,7 +39,11 @@ function Place() {
       }
       setIsLoading(false);
     } catch (error) {
-      setError(error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('Unknown error');
+      }
       setIsLoading(false);
     }
   };
@@ -37,7 +52,7 @@ function Place() {
     return (
       <>
         <pre>
-          <span className="Place-error">Error: {error?.message || error}</span>
+          <span className="NextPlace-error">Error: {error}</span>
         </pre>
       </>
     );
@@ -46,7 +61,7 @@ function Place() {
   if (!place) {
     return (
       <button
-        className="Place-button"
+        className="NextPlace-button"
         disabled={isLoading}
         onClick={handleClick}
       >
@@ -57,7 +72,7 @@ function Place() {
 
   return (
     <>
-      <p className="Place-info">{place.postcode}</p>
+      <p className="NextPlace-info">{place.postcode}</p>
       {place.locations.map(({ name }) => (
         <p key={name}>{name}</p>
       ))}
@@ -65,4 +80,4 @@ function Place() {
   );
 }
 
-export default Place;
+export default NextPlace;

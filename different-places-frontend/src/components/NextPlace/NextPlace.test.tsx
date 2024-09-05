@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
-import Place from './Place';
+import NextPlace from './NextPlace';
 
 global.fetch = jest.fn();
 
 test('renders Where to next? button', () => {
-  render(<Place />);
+  render(<NextPlace />);
 
   expect(
     screen.getByRole('button', { name: 'Where to next?' }),
@@ -14,7 +14,7 @@ test('renders Where to next? button', () => {
 });
 
 test('renders place when user clicks Where to next? button', async () => {
-  fetch.mockResolvedValue({
+  (fetch as jest.Mock).mockResolvedValue({
     ok: true,
     status: 200,
     json: () =>
@@ -37,7 +37,7 @@ test('renders place when user clicks Where to next? button', async () => {
       }),
   });
 
-  render(<Place />);
+  render(<NextPlace />);
 
   await userEvent.click(screen.getByRole('button', { name: 'Where to next?' }));
 
@@ -51,13 +51,13 @@ test('renders place when user clicks Where to next? button', async () => {
 });
 
 test('renders error message if place request fails', async () => {
-  fetch.mockResolvedValue({
+  (fetch as jest.Mock).mockResolvedValue({
     ok: false,
     status: 502,
     json: () => Promise.resolve({ error: 'Unable to retrieve place data' }),
   });
 
-  render(<Place />);
+  render(<NextPlace />);
 
   await userEvent.click(screen.getByRole('button', { name: 'Where to next?' }));
 
