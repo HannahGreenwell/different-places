@@ -3,6 +3,24 @@ import logger from 'loglevel';
 
 const auspostApiAuthKey = process.env.AUSPOST_API_AUTH_KEY;
 
+interface Locality {
+  category: string;
+  id: number;
+  latitude: number;
+  location: string;
+  longitude: number;
+  postcode: number;
+  state: string;
+}
+
+interface Localities {
+  locality: Array<Locality> | Locality;
+}
+
+interface PostcodeSearchResponse {
+  localities: Localities | string;
+}
+
 export function transformPostcodeSearchData(
   postcode: string,
   data: PostcodeSearchResponse,
@@ -25,24 +43,6 @@ export function transformPostcodeSearchData(
       longitude,
     })),
   };
-}
-
-interface Locality {
-  category: string;
-  id: number;
-  latitude: number;
-  location: string;
-  longitude: number;
-  postcode: number;
-  state: string;
-}
-
-interface Localities {
-  locality: Array<Locality> | Locality;
-}
-
-interface PostcodeSearchResponse {
-  localities: Localities | string;
 }
 
 export async function searchPostcode(postcode: string) {
