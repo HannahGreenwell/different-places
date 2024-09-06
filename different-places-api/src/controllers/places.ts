@@ -1,6 +1,7 @@
+import { Request, Response } from 'express';
 import { searchPostcode } from '../utils/postcode-search';
 
-export async function getPlace(req, res) {
+export async function getPlace(req: Request, res: Response) {
   const { postcode } = req.params;
 
   const { place, status } = await searchPostcode(postcode);

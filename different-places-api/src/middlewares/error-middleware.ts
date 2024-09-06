@@ -1,6 +1,12 @@
+import { Request, Response, NextFunction } from 'express';
 import logger from 'loglevel';
 
-function errorMiddleware(err, req, res, next) {
+function errorMiddleware(
+  err: Error,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   if (res.headersSent) {
     next(err);
   } else {

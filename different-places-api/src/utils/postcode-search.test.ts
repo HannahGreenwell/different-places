@@ -15,11 +15,11 @@ describe('searchPostcode', () => {
   global.fetch = jest.fn();
 
   beforeEach(() => {
-    fetch.mockClear();
+    (fetch as jest.Mock).mockClear();
   });
 
   test('returns a place and resolved status when postcode search is successful', async () => {
-    fetch.mockResolvedValue(getPostcodeSearchOkResponse());
+    (fetch as jest.Mock).mockResolvedValue(getPostcodeSearchOkResponse());
 
     const { place, status } = await searchPostcode('3068');
 
@@ -42,7 +42,9 @@ describe('searchPostcode', () => {
   });
 
   test('returns a null place and resolved status when postcode search is unmatched', async () => {
-    fetch.mockResolvedValue(getPostcodeSearchUnmatchedResponse());
+    (fetch as jest.Mock).mockResolvedValue(
+      getPostcodeSearchUnmatchedResponse(),
+    );
 
     const { place, status } = await searchPostcode('1111');
 
@@ -51,7 +53,7 @@ describe('searchPostcode', () => {
   });
 
   test('returns rejected status when postcode search is not successful', async () => {
-    fetch.mockResolvedValue(getPostcodeSearchBadResponse());
+    (fetch as jest.Mock).mockResolvedValue(getPostcodeSearchBadResponse());
 
     const { place, status } = await searchPostcode('3068');
 

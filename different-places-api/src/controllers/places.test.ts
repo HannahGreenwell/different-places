@@ -12,12 +12,12 @@ logger.error = jest.fn();
 global.fetch = jest.fn();
 
 beforeEach(() => {
-  fetch.mockClear();
+  (fetch as jest.Mock).mockClear();
 });
 
 describe('GET /places/:id', () => {
   test('returns 200 and the place requested', async () => {
-    fetch.mockResolvedValue(getPostcodeSearchOkResponse());
+    (fetch as jest.Mock).mockResolvedValue(getPostcodeSearchOkResponse());
 
     const response = await request(app).get('/api/places/3068');
 
@@ -43,7 +43,9 @@ describe('GET /places/:id', () => {
   });
 
   test('returns 404 when no places are found', async () => {
-    fetch.mockResolvedValue(getPostcodeSearchUnmatchedResponse());
+    (fetch as jest.Mock).mockResolvedValue(
+      getPostcodeSearchUnmatchedResponse(),
+    );
 
     const response = await request(app).get('/api/places/1111');
 
@@ -55,7 +57,7 @@ describe('GET /places/:id', () => {
   });
 
   test('returns 502 when postcode search response is not ok', async () => {
-    fetch.mockResolvedValue(getPostcodeSearchBadResponse());
+    (fetch as jest.Mock).mockResolvedValue(getPostcodeSearchBadResponse());
 
     const response = await request(app).get('/api/places/3068');
 
@@ -65,7 +67,7 @@ describe('GET /places/:id', () => {
   });
 
   test('returns 500 when postcode search fails', async () => {
-    fetch.mockRejectedValue('Postcode search API is down');
+    (fetch as jest.Mock).mockRejectedValue('Postcode search API is down');
 
     const response = await request(app).get('/api/places/3068');
 

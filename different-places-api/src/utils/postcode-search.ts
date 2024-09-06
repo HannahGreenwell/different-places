@@ -1,16 +1,21 @@
 import { AUSPOST_POSTCODE_SEARCH_URL } from '../constants/urls';
 import logger from 'loglevel';
 
-export function transformPostcodeSearchData(postcode, data) {
+const auspostApiAuthKey = process.env.AUSPOST_API_AUTH_KEY;
+
+export function transformPostcodeSearchData(
+  postcode: string,
+  data: PostcodeSearchResponse,
+) {
   const { localities } = data;
 
-  if (!localities) {
+  if (!localities || typeof localities === 'string') {
     return null;
   }
 
   const { locality } = localities;
 
-  const locations = locality.length ? locality : [locality];
+  const locations = Array.isArray(locality) ? locality : [locality];
 
   return {
     postcode,
@@ -22,10 +27,34 @@ export function transformPostcodeSearchData(postcode, data) {
   };
 }
 
-export async function searchPostcode(postcode) {
+interface Locality {
+  category: string;
+  id: number;
+  latitude: number;
+  location: string;
+  longitude: number;
+  postcode: number;
+  state: string;
+}
+
+interface Localities {
+  locality: Array<Locality> | Locality;
+}
+
+interface PostcodeSearchResponse {
+  localities: Localities | string;
+}
+
+export async function searchPostcode(postcode: string) {
   const response = await fetch(
     `${AUSPOST_POSTCODE_SEARCH_URL}q=${postcode}&state=VIC`,
-    { headers: { 'auth-key': process.env.AUSPOST_API_AUTH_KEY } },
+    {
+      headers: {
+        ...(auspostApiAuthKey && {
+          'auth-key': process.env.AUSPOST_API_AUTH_KEY,
+        }),
+      },
+    },
   );
 
   const data = await response.json();
