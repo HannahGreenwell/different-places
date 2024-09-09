@@ -1,12 +1,16 @@
 import { Request, Response } from 'express';
 import { searchPostcode } from '../utils/postcode-search';
+import { Place, Status } from '../types';
 
-export async function getPlace(req: Request, res: Response) {
+export async function getPlace(
+  req: Request,
+  res: Response,
+): Promise<Response<Place>> {
   const { postcode } = req.params;
 
   const { place, status } = await searchPostcode(postcode);
 
-  if (status === 'rejected') {
+  if (status === Status.Rejected) {
     return res.status(502).json({ error: 'Unable to retrieve place data' });
   }
 
@@ -16,5 +20,5 @@ export async function getPlace(req: Request, res: Response) {
       .json({ error: `No places found matching postcode: ${postcode}` });
   }
 
-  res.send({ place });
+  return res.send({ place });
 }

@@ -8,6 +8,7 @@ import {
   MOCK_MULTIPLE_LOCALITIES_MATCHED_DATA,
   MOCK_NO_LOCALITIES_MATCHED_DATA,
 } from '../test/utils/postcode-search';
+import { Status } from '../types';
 
 describe('searchPostcode', () => {
   logger.error = jest.fn();
@@ -38,18 +39,18 @@ describe('searchPostcode', () => {
         },
       ],
     });
-    expect(status).toBe('resolved');
+    expect(status).toBe(Status.Resolved);
   });
 
-  test('returns a null place and resolved status when postcode search is unmatched', async () => {
+  test('returns an undefined place and resolved status when postcode search is unmatched', async () => {
     (fetch as jest.Mock).mockResolvedValue(
       getPostcodeSearchUnmatchedResponse(),
     );
 
     const { place, status } = await searchPostcode('1111');
 
-    expect(status).toBe('resolved');
-    expect(place).toBeNull();
+    expect(status).toBe(Status.Resolved);
+    expect(place).toBeUndefined();
   });
 
   test('returns rejected status when postcode search is not successful', async () => {
@@ -57,7 +58,7 @@ describe('searchPostcode', () => {
 
     const { place, status } = await searchPostcode('3068');
 
-    expect(status).toBe('rejected');
+    expect(status).toBe(Status.Rejected);
     expect(place).toBeUndefined();
     expect(logger.error).toHaveBeenCalledTimes(1);
   });
@@ -105,12 +106,12 @@ describe('transformPostcodeSearchData', () => {
     });
   });
 
-  test('returns null when postcode is unmatched', () => {
+  test('returns undefined when postcode is unmatched', () => {
     const place = transformPostcodeSearchData(
       '1111',
       MOCK_NO_LOCALITIES_MATCHED_DATA,
     );
 
-    expect(place).toBeNull();
+    expect(place).toBeUndefined();
   });
 });

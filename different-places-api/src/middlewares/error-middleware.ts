@@ -6,7 +6,7 @@ function errorMiddleware(
   req: Request,
   res: Response,
   next: NextFunction,
-) {
+): void {
   if (res.headersSent) {
     next(err);
   } else {
