@@ -1,7 +1,8 @@
 import React from 'react';
-import { API_BASE_URL } from '../../constants/urls';
 import postcodes from '../../data/postcodes.json';
 import './NextPlace.css';
+
+const API_BASE_URL = process.env.REACT_APP_API_URL;
 
 interface Location {
   name: string;
